@@ -1,35 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import '@fontsource-variable/inter';
+import './index.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+import { lazy, Suspense } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router';
+import { Spinner } from './components/ui/spinner.tsx';
+import { Layout } from './app/layout.tsx';
 
+const NotFound = lazy(() =>
+  import('./app/NotFound.tsx').then((module) => ({
+    default: module.NotFound,
+  }))
+);
+
+const Home = lazy(() =>
+  import('./app/Home.tsx').then((module) => ({
+    default: module.Home,
+  }))
+);
+
+export function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      <Suspense
+        fallback={
+          <div className="min-h-[350px] w-full flex flex-col gap-6 items-center px-4 py-24">
+            <Spinner size="lg" />
+          </div>
+        }
+      >
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  );
 }
-
-export default App

@@ -4,9 +4,18 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>Vite App Starter | By mazipan</title>
+
+    <script>
+      document.documentElement.classList.toggle(
+        'dark',
+        localStorage.currentTheme === 'dark' ||
+          (!('theme' in localStorage) &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches)
+      );
+    </script>
   </head>
-  <body>
+  <body class="bg-slate-100 text-slate-800 dark:text-slate-100 dark:bg-slate-800">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
